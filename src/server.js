@@ -11,7 +11,16 @@ const tarefas = [
 
 app.get("/health", (req, res) => res.json({ status: "ok" }));
 app.get("/", (req, res) => res.send("API de Tarefas no ar"));
-app.get("/tarefas", (req, res) => res.json(tarefas));
+app.get("/tarefas", (req, res) => {
+    const { concluida } = req.query;
+
+    if (concluida === undefined) return res.json(tarefas);
+
+    const filtro = concluida === "true";
+    const tarefasFiltradas = tarefas.filter(tarefa => tarefa.concluida === filtro);
+    
+    res.json(tarefasFiltradas);
+});
 app.get("/tarefas/:id", (req, res) => {
     const id = Number(req.params.id);
 
