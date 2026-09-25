@@ -8,5 +8,8 @@
     "url": "git+https://github.com/sddsBanjo/ptas3-semana6.git"
   },
   "author": "SDDS Banjo",
-  "type": "module"
+  "type": "module",
+  "dependencies": {
+    "express": "^5.2.1"
+  }
 }
