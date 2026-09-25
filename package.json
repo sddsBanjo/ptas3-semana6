@@ -11,5 +11,8 @@
   "type": "module",
   "dependencies": {
     "express": "^5.2.1"
+  },
+  "scripts": {
+    "dev": "node --watch src/server.js"
   }
 }
