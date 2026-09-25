@@ -1,0 +1,76 @@
+@baseUrl = http://localhost:3000
+
+# ==============================================================================
+# ROTA 1: Healthcheck
+# Método: GET
+# URL: http://localhost:3000/health
+# Resposta Esperada (200 OK): { "status": "ok" }
+# ==============================================================================
+GET {{baseUrl}}/health
+
+###
+
+# ==============================================================================
+# ROTA 2: Raiz (Home)
+# Método: GET
+# URL: http://localhost:3000/
+# Resposta Esperada (200 OK): "API de Tarefas no ar"
+# ==============================================================================
+GET {{baseUrl}}/
+
+###
+
+# ==============================================================================
+# ROTA 3: Listar todas as tarefas
+# Método: GET
+# URL: http://localhost:3000/tarefas
+# Resposta Esperada (200 OK): Array contendo todos os objetos de tarefas
+# ==============================================================================
+GET {{baseUrl}}/tarefas
+
+###
+
+# ==============================================================================
+# ROTA 4: Filtrar tarefas por status (Concluídas)
+# Método: GET
+# URL: http://localhost:3000/tarefas?concluida=true
+# Resposta Esperada (200 OK): Array filtrado contendo apenas tarefas onde concluida é true
+# ==============================================================================
+GET {{baseUrl}}/tarefas?concluida=true
+
+###
+
+# ==============================================================================
+# ROTA 5: Buscar tarefa por ID (Sucesso)
+# Método: GET
+# URL: http://localhost:3000/tarefas/2
+# Resposta Esperada (200 OK): { "id": 2, "titulo": "Ouvir um álbum novo", "concluida": true }
+# ==============================================================================
+GET {{baseUrl}}/tarefas/2
+
+###
+
+# ==============================================================================
+# ROTA 6: Buscar tarefa por ID (Não Encontrada)
+# Método: GET
+# URL: http://localhost:3000/tarefas/99
+# Resposta Esperada (404 Not Found): { "erro": "Tarefa de ID 99 não encontrada." }
+# ==============================================================================
+GET {{baseUrl}}/tarefas/99
+
+###
+
+# ==============================================================================
+# ROTA 7: Criar uma nova tarefa
+# Método: POST
+# URL: http://localhost:3000/tarefas
+# Corpo da Requisição (JSON): Veja o bloco abaixo
+# Resposta Esperada (201 Created): { "id": 4, "titulo": "Nova tarefa", "concluida": false }
+# ==============================================================================
+POST {{baseUrl}}/tarefas
+Content-Type: application/json
+
+{
+    "titulo": "Estudar russo",
+    "concluida": false
+}
