@@ -1,4 +1,5 @@
 @baseUrl = http://localhost:3000
+@apiKey = Banjo-Kazooie.29/04
 
 # ==============================================================================
 # ROTA 1: Healthcheck
@@ -61,13 +62,30 @@ GET {{baseUrl}}/tarefas/99
 ###
 
 # ==============================================================================
-# ROTA 7: Criar uma nova tarefa
+# ROTA 7: Criar uma nova tarefa (Erro de Autenticação)
 # Método: POST
 # URL: http://localhost:3000/tarefas
-# Corpo da Requisição (JSON): Veja o bloco abaixo
-# Resposta Esperada (201 Created): { "id": 4, "titulo": "Nova tarefa", "concluida": false }
+# Resposta Esperada (401 Unauthorized): { "erro": "Acesso negado. Cabeçalho 'x-api-key' não fornecido." }
 # ==============================================================================
 POST {{baseUrl}}/tarefas
+Content-Type: application/json
+
+{
+    "titulo": "Tentar criar uma tarefa sem passar a chave da API",
+    "concluida": false
+}
+
+###
+
+# ==============================================================================
+# ROTA 8: Criar uma nova tarefa (Sucesso com Chave)
+# Método: POST
+# URL: http://localhost:3000/tarefas
+# Corpo da Requisição (JSON): Veja o bloco abaixo com o x-api-key incluído
+# Resposta Esperada (201 Created): { "id": 4, "titulo": "Estudar russo", "concluida": false }
+# ==============================================================================
+POST {{baseUrl}}/tarefas
+x-api-key: {{apiKey}}
 Content-Type: application/json
 
 {
