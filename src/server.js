@@ -4,6 +4,12 @@ const app = express();
 const port = 3000;
 app.use(express.json());
 
+function logger(req, res, next) {
+    console.log(`${new Date().toISOString()} - ${req.method} ${req.url}`);
+    next();
+}
+app.use(logger);
+
 const tarefas = [
     { "id": 1, "titulo": "Trabalhar no meu projeto", "concluida": false },
     { "id": 2, "titulo": "Ouvir um álbum novo", "concluida": true },
