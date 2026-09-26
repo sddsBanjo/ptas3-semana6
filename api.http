@@ -63,9 +63,7 @@ GET {{baseUrl}}/tarefas/99
 
 # ==============================================================================
 # ROTA 7: Criar uma nova tarefa (Erro de Autenticação)
-# Método: POST
-# URL: http://localhost:3000/tarefas
-# Resposta Esperada (401 Unauthorized): { "erro": "Acesso negado. Cabeçalho 'x-api-key' não fornecido." }
+# Resposta Esperada (401 Unauthorized): { "erro": "Acesso negado..." }
 # ==============================================================================
 POST {{baseUrl}}/tarefas
 Content-Type: application/json
@@ -78,17 +76,29 @@ Content-Type: application/json
 ###
 
 # ==============================================================================
-# ROTA 8: Criar uma nova tarefa (Sucesso com Chave)
-# Método: POST
-# URL: http://localhost:3000/tarefas
-# Corpo da Requisição (JSON): Veja o bloco abaixo com o x-api-key incluído
-# Resposta Esperada (201 Created): { "id": 4, "titulo": "Estudar russo", "concluida": false }
+# ROTA 8: Criar uma nova tarefa (Erro de Validação - Campos Faltando/Vazios)
+# Resposta Esperada (400 Bad Request): Retorna o array de erros detalhado
 # ==============================================================================
 POST {{baseUrl}}/tarefas
 x-api-key: {{apiKey}}
 Content-Type: application/json
 
 {
-    "titulo": "Estudar russo",
+    "titulo": "   ",
+    "concluida": "nao_sou_um_booleano"
+}
+
+###
+
+# ==============================================================================
+# ROTA 9: Criar uma nova tarefa (Sucesso Total)
+# Resposta Esperada (201 Created): Objeto criado com ID automático e título com trim()
+# ==============================================================================
+POST {{baseUrl}}/tarefas
+x-api-key: {{apiKey}}
+Content-Type: application/json
+
+{
+    "titulo": " Estudar russo ",
     "concluida": false
 }
