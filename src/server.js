@@ -14,6 +14,33 @@ function autenticador(req, res, next) {
     next();
 }
 
+function validador(req, res, next) {
+    const { titulo, concluida } = req.body;
+    const erros = [];
+
+    if (titulo === undefined || titulo === null) {
+        erros.push({ campo: "titulo", mensagem: "O campo 'titulo' é obrigatório." });
+    } else if (typeof titulo !== "string") {
+        erros.push({ campo: "titulo", mensagem: "O campo 'titulo' deve ser do tipo string." });
+    } else if (titulo.trim() === "") {
+        erros.push({ campo: "titulo", mensagem: "O campo 'titulo' não pode ser uma string vazia." });
+    }
+
+    if (concluida === undefined || concluida === null) {
+        erros.push({ campo: "concluida", mensagem: "O campo 'concluida' é obrigatório." });
+    } else if (typeof concluida !== "boolean") {
+        erros.push({ campo: "concluida", mensagem: "O campo 'concluida' deve ser do tipo boolean (true ou false)." });
+    }
+
+    if (erros.length > 0) {
+        return res.status(400).json({ erros });
+    }
+
+    req.body.titulo = titulo.trim();
+
+    next();
+}
+
 function logger(req, res, next) {
     console.log(`${new Date().toISOString()} - ${req.method} ${req.url}`);
     next();
@@ -47,7 +74,7 @@ app.get("/tarefas/:id", (req, res) => {
 
     res.json(resultado);
 });
-app.post("/tarefas", [autenticador], (req, res) => {
+app.post("/tarefas", [autenticador, validador], (req, res) => {
     const { titulo, concluida } = req.body;
 
     const novaTarefa = {
