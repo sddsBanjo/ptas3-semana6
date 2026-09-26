@@ -2,7 +2,17 @@ import express from "express";
 
 const app = express();
 const port = 3000;
+const chaveAutorizada = "Banjo-Kazooie.29/04";
 app.use(express.json());
+
+function autenticador(req, res, next) {
+    const chaveApi = req.headers["x-api-key"];
+
+    if (!chaveApi) return res.status(401).json({ erro: "Acesso negado. Cabeçalho 'x-api-key' não fornecido." });
+    if (chaveApi !== chaveAutorizada) return res.status(401).json({ erro: "Acesso negado. Chave de API inválida." });
+
+    next();
+}
 
 function logger(req, res, next) {
     console.log(`${new Date().toISOString()} - ${req.method} ${req.url}`);
@@ -37,7 +47,7 @@ app.get("/tarefas/:id", (req, res) => {
 
     res.json(resultado);
 });
-app.post("/tarefas", (req, res) => {
+app.post("/tarefas", [autenticador], (req, res) => {
     const { titulo, concluida } = req.body;
 
     const novaTarefa = {
